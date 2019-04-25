@@ -1,11 +1,10 @@
-package nl.infosupport.intern.recognition.domainservices;
+package nl.infosupport.intern.recognition.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommandHandler;
-import nl.infosupport.intern.recognition.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.repositories.PersonRepositoryAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,6 +18,7 @@ public class PersonService implements PersonRepositoryAdapter {
 
     private PersonRepository repo;
 
+    @Autowired
     public PersonService(PersonRepository personRepository) {
         this.repo = personRepository;
     }

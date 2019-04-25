@@ -10,15 +10,13 @@ import javax.persistence.EntityExistsException;
 @Service
 public class AzureCognitiveServicesEntryService implements EntryService {
 
-//    private PersonRepositoryAdapter personService;
+    private PersonRepositoryAdapter personService;
     private CloudRecognitionService recognitionService;
 
     @Autowired
-    PersonRepositoryAdapter personService;
-    @Autowired
-    public AzureCognitiveServicesEntryService(CloudRecognitionService entryService) {
-//        this.personService = personService;
-        this.recognitionService = entryService;
+    public AzureCognitiveServicesEntryService(PersonRepositoryAdapter personService, CloudRecognitionService cloudRecognitionService) {
+        this.personService = personService;
+        this.recognitionService = cloudRecognitionService;
     }
 
     @Override
@@ -27,6 +25,7 @@ public class AzureCognitiveServicesEntryService implements EntryService {
         //If the name already exists, handle that somehow.
         if (!personService.isUniqueName(name)) throw new EntityExistsException("Name already exists!");
 
+        System.out.println(Thread.currentThread().getName());
         var azurePersonIdFuture = recognitionService.createPerson(name);
 
         return personService.create(name, azurePersonIdFuture);

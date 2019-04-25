@@ -2,6 +2,7 @@ package nl.infosupport.intern.recognition.domainservices;
 
 import nl.infosupport.intern.recognition.repositories.PersonRepository;
 import nl.infosupport.intern.recognition.repositories.PersonRepositoryAdapter;
+import nl.infosupport.intern.recognition.repositories.PersonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;

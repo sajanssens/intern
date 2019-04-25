@@ -5,41 +5,47 @@ import nl.infosupport.intern.recognition.domainservices.actions.CommandHandler;
 import nl.infosupport.intern.recognition.domainservices.actions.person.Command;
 import nl.infosupport.intern.recognition.domainservices.actions.person.add.AddFaceCommand;
 import nl.infosupport.intern.recognition.domainservices.actions.person.create.CreatePersonCommand;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+
+import static nl.infosupport.intern.recognition.domainservices.actions.CommandEnum.CREATE;
 
 @Service
 public class FaceApiService implements CloudRecognitionService {
 
     private Map<CommandEnum, CommandHandler<Command>> commands;
-//    private Map<CommandEnum, CreatePersonCommandHandler> commands;
 
-    @Autowired
     public FaceApiService(Map<CommandEnum, CommandHandler<Command>> commands) {
         this.commands = commands;
     }
 
     @Override
     public CompletableFuture<String> createPerson(String name) {
+        System.out.println(Thread.currentThread().getName());
 
-        var commandHandler = commands.get(CommandEnum.CREATE);
-        var createPersonCommand = new CreatePersonCommand( "infosupport", name);
+        CompletableFuture<String> completableFuture = CompletableFuture
+                .supplyAsync(() -> new CreatePersonCommand("infosupport", name), Executors.newSingleThreadExecutor())
+                .thenApply(command -> {
+                    System.out.println(Thread.currentThread().getName());
+                    CommandHandler<Command> commandHandler = commands.get(CREATE);
+                    commandHandler.handle(command);
+                    return commandHandler;
+                })
+                .thenApply(CommandHandler::getResult);
 
-        commandHandler.handle(createPersonCommand);
-
-        return CompletableFuture.supplyAsync(commandHandler::getResult);
+        return completableFuture;
     }
 
     @Override
-    public CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image){
+    public CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image) {
 
         var commandHandler = commands.get(CommandEnum.ADDFACE);
 
-        var addFaceCommand = new AddFaceCommand("infosupport",personId, image);
+        var addFaceCommand = new AddFaceCommand("infosupport", personId, image);
 
         commandHandler.handle(addFaceCommand);
 

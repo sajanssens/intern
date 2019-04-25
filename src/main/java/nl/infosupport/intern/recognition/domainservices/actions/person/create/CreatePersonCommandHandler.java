@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
@@ -27,6 +28,7 @@ public class CreatePersonCommandHandler implements CommandHandler<CreatePersonCo
 
     private String result;
 
+    @Autowired
     public CreatePersonCommandHandler(Subscription subscriptionKey) {
         this.subscription = subscriptionKey;
     }

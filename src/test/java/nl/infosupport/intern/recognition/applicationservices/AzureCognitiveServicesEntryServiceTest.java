@@ -30,7 +30,7 @@ class AzureCognitiveServicesEntryServiceTest {
         when(personRepositoryAdapter.isUniqueName(any())).thenReturn(true);
         when(personRepositoryAdapter.create(any(),any())).thenReturn("");
 
-        var azureService = new AzureCognitiveServicesEntryService(cloudRecognitionService);
+        var azureService = new AzureCognitiveServicesEntryService(personRepositoryAdapter, cloudRecognitionService);
 
         azureService.register("Rico");
     }
