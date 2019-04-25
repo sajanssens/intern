@@ -2,6 +2,7 @@ package nl.infosupport.intern.recognition.applicationservices;
 
 import nl.infosupport.intern.recognition.domainservices.CloudRecognitionService;
 import nl.infosupport.intern.recognition.repositories.PersonRepositoryAdapter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -24,11 +25,15 @@ class AzureCognitiveServicesEntryServiceTest {
     @Mock
     private CloudRecognitionService cloudRecognitionService;
 
-    @Test
-    void whenRegisterNewName() {
-        when(cloudRecognitionService.createPerson(any())).thenReturn(CompletableFuture.completedFuture("test-id"));
+    @BeforeEach
+    void setUp() {
         when(personRepositoryAdapter.isUniqueName(any())).thenReturn(true);
         when(personRepositoryAdapter.create(any(),any())).thenReturn("");
+    }
+
+    @Test
+    void whenRegisterNewNameWithCompletedFuture() {
+        when(cloudRecognitionService.createPerson(any())).thenReturn(CompletableFuture.completedFuture("test-id"));
 
         var azureService = new AzureCognitiveServicesEntryService(personRepositoryAdapter, cloudRecognitionService);
 

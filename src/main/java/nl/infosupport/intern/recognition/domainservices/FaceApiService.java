@@ -27,12 +27,12 @@ public class FaceApiService implements CloudRecognitionService {
     public CompletableFuture<String> createPerson(String name) {
 
         return CompletableFuture.supplyAsync(() -> new CreatePersonCommand("infosupport", name))
-                .thenApply(command -> {
+                .thenApplyAsync(command -> {
                     CommandHandler<Command> commandHandler = commands.get(CREATE);
                     commandHandler.handle(command);
                     return commandHandler;
                 })
-                .thenApply(CommandHandler::getResult);
+                .thenApplyAsync(CommandHandler::getResult);
 
     }
 
@@ -40,11 +40,11 @@ public class FaceApiService implements CloudRecognitionService {
     public CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image) {
 
         return CompletableFuture.supplyAsync(() -> new AddFaceCommand("infosupport", personId, image))
-                .thenApply(command -> {
+                .thenApplyAsync(command -> {
                     CommandHandler<Command> commandHandler = commands.get(ADDFACE);
                     commandHandler.handle(command);
                     return commandHandler;
                 })
-                .thenApply(CommandHandler::getResult);
+                .thenApplyAsync(CommandHandler::getResult);
     }
 }
