@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import static nl.infosupport.intern.recognition.domainservices.actions.CommandEnum.ADDFACE;
 import static nl.infosupport.intern.recognition.domainservices.actions.CommandEnum.CREATE;
@@ -32,14 +31,11 @@ public class FaceApiService implements CloudRecognitionService {
     }
 
     @Override
-    public CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image) {
+    public String addFaceToPerson(String personId, BufferedImage image) {
+        var handler = commands.get(ADDFACE);
+        handler.handle(new AddFaceCommand("infosupport", personId, image));
 
-        return CompletableFuture.supplyAsync(() -> new AddFaceCommand("infosupport", personId, image))
-                .thenApplyAsync(command -> {
-                    CommandHandler<Command> commandHandler = commands.get(ADDFACE);
-                    commandHandler.handle(command);
-                    return commandHandler;
-                })
-                .thenApplyAsync(CommandHandler::getResult);
+        return handler.getResult();
+
     }
 }
