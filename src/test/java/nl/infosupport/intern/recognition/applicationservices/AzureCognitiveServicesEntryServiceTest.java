@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.concurrent.CompletableFuture;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +31,7 @@ class AzureCognitiveServicesEntryServiceTest {
 
     @Test
     void whenRegisterNewNameWithCompletedFuture() {
-        when(cloudRecognitionService.createPerson(any())).thenReturn(CompletableFuture.completedFuture("test-id"));
+        when(cloudRecognitionService.createPerson(any())).thenReturn("test-id");
 
         var azureService = new AzureCognitiveServicesEntryService(personRepositoryAdapter, cloudRecognitionService);
 

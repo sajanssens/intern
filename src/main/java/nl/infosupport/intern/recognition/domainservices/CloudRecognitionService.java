@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface CloudRecognitionService {
 
-    CompletableFuture<String> createPerson(String name);
+    String createPerson(String name);
 
     CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image);
 }

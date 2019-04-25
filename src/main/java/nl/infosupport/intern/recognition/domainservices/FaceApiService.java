@@ -24,16 +24,11 @@ public class FaceApiService implements CloudRecognitionService {
     }
 
     @Override
-    public CompletableFuture<String> createPerson(String name) {
+    public String createPerson(String name) {
+        var handler = commands.get(CREATE);
+        handler.handle(new CreatePersonCommand("infosupport", name));
 
-        return CompletableFuture.supplyAsync(() -> new CreatePersonCommand("infosupport", name))
-                .thenApplyAsync(command -> {
-                    CommandHandler<Command> commandHandler = commands.get(CREATE);
-                    commandHandler.handle(command);
-                    return commandHandler;
-                })
-                .thenApplyAsync(CommandHandler::getResult);
-
+        return handler.getResult();
     }
 
     @Override

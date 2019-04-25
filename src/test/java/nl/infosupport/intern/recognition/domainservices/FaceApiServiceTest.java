@@ -27,7 +27,6 @@ class FaceApiServiceTest {
     CommandHandler cm;
 
 
-
     @Test
     void createPerson() throws ExecutionException, InterruptedException {
         when(commands.get(any())).thenReturn(cm);
@@ -35,7 +34,7 @@ class FaceApiServiceTest {
 
         CloudRecognitionService service = new FaceApiService(commands);
 
-        CompletableFuture<String> rico = service.createPerson("Rico");
+        CompletableFuture<String> rico = CompletableFuture.supplyAsync(() -> service.createPerson("Rico"));
 
         System.out.println(rico.get());
     }
