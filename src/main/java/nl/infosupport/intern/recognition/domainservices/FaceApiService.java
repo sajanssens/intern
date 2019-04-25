@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
+import static nl.infosupport.intern.recognition.domainservices.actions.CommandEnum.ADDFACE;
 import static nl.infosupport.intern.recognition.domainservices.actions.CommandEnum.CREATE;
 
 @Service
@@ -25,30 +25,26 @@ public class FaceApiService implements CloudRecognitionService {
 
     @Override
     public CompletableFuture<String> createPerson(String name) {
-        System.out.println(Thread.currentThread().getName());
 
-        CompletableFuture<String> completableFuture = CompletableFuture
-                .supplyAsync(() -> new CreatePersonCommand("infosupport", name), Executors.newSingleThreadExecutor())
+        return CompletableFuture.supplyAsync(() -> new CreatePersonCommand("infosupport", name))
                 .thenApply(command -> {
-                    System.out.println(Thread.currentThread().getName());
                     CommandHandler<Command> commandHandler = commands.get(CREATE);
                     commandHandler.handle(command);
                     return commandHandler;
                 })
                 .thenApply(CommandHandler::getResult);
 
-        return completableFuture;
     }
 
     @Override
     public CompletableFuture<String> addFaceToPerson(String personId, BufferedImage image) {
 
-        var commandHandler = commands.get(CommandEnum.ADDFACE);
-
-        var addFaceCommand = new AddFaceCommand("infosupport", personId, image);
-
-        commandHandler.handle(addFaceCommand);
-
-        return CompletableFuture.supplyAsync(commandHandler::getResult);
+        return CompletableFuture.supplyAsync(() -> new AddFaceCommand("infosupport", personId, image))
+                .thenApply(command -> {
+                    CommandHandler<Command> commandHandler = commands.get(ADDFACE);
+                    commandHandler.handle(command);
+                    return commandHandler;
+                })
+                .thenApply(CommandHandler::getResult);
     }
 }
