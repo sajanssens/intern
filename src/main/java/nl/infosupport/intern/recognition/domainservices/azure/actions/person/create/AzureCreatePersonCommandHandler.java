@@ -36,6 +36,7 @@ public class AzureCreatePersonCommandHandler<C extends AzureCreatePersonCommand>
 
     @Override
     public void handle(C command) {
+
         try {
             UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder();
             URI uri = uriBuilder
@@ -56,7 +57,13 @@ public class AzureCreatePersonCommandHandler<C extends AzureCreatePersonCommand>
             logger.debug("StatusCode: {}", response.getStatusLine().getStatusCode());
 
             JSONObject jsonResult = new JSONObject(EntityUtils.toString(response.getEntity()));
+
+            if(jsonResult.isNull("personId")){
+                throw new RuntimeException("message: " + jsonResult.optJSONObject("error").optString("message"));
+            }
+
             result = jsonResult.optString("personId");
+
 
         } catch (IOException | JSONException e) {
             logger.debug("Exception: ", e);

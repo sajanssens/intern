@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -23,18 +25,44 @@ class AzureEntryServiceTest {
     @Mock
     private CreatePersonService createPersonService;
 
+    private AzureEntryService aez;
+
     @BeforeEach
     void setUp() {
-        when(personRepositoryAdapter.isUniqueName(any())).thenReturn(true);
-        when(personRepositoryAdapter.create(any(),any())).thenReturn("");
+        aez = new AzureEntryService(personRepositoryAdapter, createPersonService);
     }
 
     @Test
-    void whenRegisterNewNameWithCompletedFuture() {
-        when(createPersonService.createPerson(any())).thenReturn("test-id");
+    void WhenRegisterPersonAndHasUniqueNameResultShouldBeSucceeded() {
+        String uniquePersonName = "Unique Name";
 
-        var azureService = new AzureEntryService(personRepositoryAdapter, createPersonService);
+        when(personRepositoryAdapter.isUniqueName(uniquePersonName)).thenReturn(true);
+        when(createPersonService.createPerson(uniquePersonName)).thenReturn("mocked-person-id");
+        when(personRepositoryAdapter.create(any(),any())).thenReturn("succeed");
 
-        azureService.register("Rico");
+        RegisterResult result = aez.register(uniquePersonName);
+
+        assertThat(result.isSucceed(), is(true));
+        assertThat(result.getReason(), is("succeed"));
+    }
+
+    @Test
+    void whenRegisterPersonAndHasNoUniqueNameResultShouldNotBeSucceeded() {
+        String noUniqueName = "No Unique Name";
+
+        when(personRepositoryAdapter.isUniqueName(noUniqueName)).thenReturn(false);
+
+        RegisterResult result = aez.register(noUniqueName);
+
+        assertThat(result.isSucceed(), is(false));
+        assertThat(result.getReason(), is("No unique name"));
+    }
+
+    @Test
+    void whenRegisterPersonAndGetErrorShouldThrowException() {
+        when(personRepositoryAdapter.isUniqueName(any())).thenReturn(true);
+        when(createPersonService.createPerson(any())).thenThrow(new RuntimeException(""));
+
+        aez.register("Rico");
     }
 }

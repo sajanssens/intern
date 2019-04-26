@@ -36,11 +36,11 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
         person.setName(name);
 
         personId.completeOnTimeout("time-out", 5, SECONDS)
-                .thenAcceptAsync(person::setFaceId)
+                .thenAcceptAsync(person::setPersonId)
                 .thenRun(() -> repo.save(person))
                 .thenRun(() -> logger.debug("entity saved in database"));
 
-        return name;
+        return "succeed";
     }
 
 

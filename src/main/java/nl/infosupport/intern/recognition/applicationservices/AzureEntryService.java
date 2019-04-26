@@ -38,11 +38,12 @@ public class AzureEntryService implements EntryService {
 
         logger.debug("{}", Thread.currentThread().getName());
 
-        var azurePersonIdFuture = CompletableFuture.supplyAsync(() -> createPersonService.createPerson(name));
+        var azurePersonIdFuture = CompletableFuture
+                .supplyAsync(() -> createPersonService.createPerson(name));
 
-        personRepositoryService.create(name, azurePersonIdFuture);
+        String result = personRepositoryService.create(name, azurePersonIdFuture);
 
-        return new RegisterResult(true, name, "succeed");
+        return new RegisterResult(true, name, result);
 
     }
 }

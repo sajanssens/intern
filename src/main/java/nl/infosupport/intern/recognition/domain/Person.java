@@ -20,11 +20,11 @@ public class Person {
     @Id
     private String name;
 
-    private String faceId;
+    private String personId;
 
-    public Person(String name, String faceId) {
+    public Person(String name, String personId) {
         this.name = name;
-        this.faceId = faceId;
+        this.personId = personId;
     }
 
     public void setName(String name){
@@ -32,8 +32,8 @@ public class Person {
         this.name = name;
     }
 
-    public void setFaceId(String faceId){
-        logger.debug("set faceId: {}", faceId);
-        this.faceId = faceId;
+    public void setPersonId(String personId){
+        logger.debug("set personId: {}", personId);
+        this.personId = personId;
     }
 }
