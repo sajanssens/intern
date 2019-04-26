@@ -1,6 +1,6 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
-import nl.infosupport.intern.recognition.domainservices.azure.CloudService;
+import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
-class FaceApiEntryServiceTest {
+class AzureEntryServiceTest {
 
     @Mock
     private PersonRepositoryAdapter personRepositoryAdapter;
 
     @Mock
-    private CloudService cloudService;
+    private CreatePersonService createPersonService;
 
     @BeforeEach
     void setUp() {
@@ -31,9 +31,9 @@ class FaceApiEntryServiceTest {
 
     @Test
     void whenRegisterNewNameWithCompletedFuture() {
-        when(cloudService.createPerson(any())).thenReturn("test-id");
+        when(createPersonService.createPerson(any())).thenReturn("test-id");
 
-        var azureService = new FaceApiEntryService(personRepositoryAdapter, cloudService);
+        var azureService = new AzureEntryService(personRepositoryAdapter, createPersonService);
 
         azureService.register("Rico");
     }

@@ -2,11 +2,11 @@ package nl.infosupport.intern.recognition.domainservices.azure.actions.group;
 
 import nl.infosupport.intern.recognition.domainservices.azure.HttpClientFactory;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandHandler;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.Subscription;
 import org.apache.http.client.methods.HttpPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
@@ -21,12 +21,12 @@ public class TrainGroupCommandHandler implements CommandHandler<TrainGroupComman
 
     private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
 
-    private final Subscription subscription;
+    private final String subscription;
 
     private String result;
 
     @Autowired
-    public TrainGroupCommandHandler(Subscription subscriptionKey) {
+    public TrainGroupCommandHandler(@Qualifier("getAzureSubscription") String subscriptionKey) {
         this.subscription = subscriptionKey;
     }
 
@@ -43,7 +43,7 @@ public class TrainGroupCommandHandler implements CommandHandler<TrainGroupComman
                 .build();
 
         try {
-            var httpClient = HttpClientFactory.faceApiHttpClient(subscription.getOcpApimSubscriptionKey(), APPLICATION_JSON);
+            var httpClient = HttpClientFactory.faceApiHttpClient(subscription, APPLICATION_JSON);
             var httpPost = new HttpPost(uri);
             var response = httpClient.execute(httpPost);
 
