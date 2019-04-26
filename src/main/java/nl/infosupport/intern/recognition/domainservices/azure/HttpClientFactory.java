@@ -1,4 +1,4 @@
-package nl.infosupport.intern.recognition.domainservices;
+package nl.infosupport.intern.recognition.domainservices.azure;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.ContentType;

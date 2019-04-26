@@ -1,7 +1,7 @@
-package nl.infosupport.intern.recognition.domainservices.actions.person.create;
+package nl.infosupport.intern.recognition.domainservices.azure.actions.person.create;
 
 import lombok.Data;
-import nl.infosupport.intern.recognition.domainservices.actions.person.Command;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Command;
 
 
 @Data

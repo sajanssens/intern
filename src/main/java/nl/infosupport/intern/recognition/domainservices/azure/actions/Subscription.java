@@ -1,4 +1,4 @@
-package nl.infosupport.intern.recognition.domainservices.actions;
+package nl.infosupport.intern.recognition.domainservices.azure.actions;
 
 import lombok.Getter;
 

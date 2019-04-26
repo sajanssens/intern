@@ -1,8 +1,8 @@
-package nl.infosupport.intern.recognition.domainservices.actions.person.add;
+package nl.infosupport.intern.recognition.domainservices.azure.actions.person.add;
 
-import nl.infosupport.intern.recognition.domainservices.HttpClientFactory;
-import nl.infosupport.intern.recognition.domainservices.actions.CommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.Subscription;
+import nl.infosupport.intern.recognition.domainservices.azure.HttpClientFactory;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Subscription;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;

@@ -1,7 +1,7 @@
 package nl.infosupport.intern.recognition.domain;
 
 import lombok.*;
-import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

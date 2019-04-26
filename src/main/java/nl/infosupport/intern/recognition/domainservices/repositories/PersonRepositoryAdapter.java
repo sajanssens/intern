@@ -1,4 +1,4 @@
-package nl.infosupport.intern.recognition.repositories;
+package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -1,8 +1,8 @@
-package nl.infosupport.intern.recognition.domainservices.actions.group;
+package nl.infosupport.intern.recognition.domainservices.azure.actions.group;
 
-import nl.infosupport.intern.recognition.domainservices.HttpClientFactory;
-import nl.infosupport.intern.recognition.domainservices.actions.CommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.Subscription;
+import nl.infosupport.intern.recognition.domainservices.azure.HttpClientFactory;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Subscription;
 import org.apache.http.client.methods.HttpPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,8 @@
-package nl.infosupport.intern.recognition.domainservices.actions.person.add;
+package nl.infosupport.intern.recognition.domainservices.azure.actions.person.add;
 
 import lombok.Data;
-import nl.infosupport.intern.recognition.domainservices.actions.person.Command;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Command;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Data

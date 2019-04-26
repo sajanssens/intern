@@ -1,4 +1,4 @@
-package nl.infosupport.intern.recognition.repositories;
+package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
 import org.springframework.data.repository.CrudRepository;

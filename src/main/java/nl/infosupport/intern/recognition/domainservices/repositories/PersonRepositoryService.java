@@ -1,7 +1,7 @@
-package nl.infosupport.intern.recognition.repositories;
+package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
-import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,14 @@ import java.util.concurrent.CompletableFuture;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Service
-public class PersonService implements PersonRepositoryAdapter {
+public class PersonRepositoryService implements PersonRepositoryAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
 
     private PersonRepository repo;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonRepositoryService(PersonRepository personRepository) {
         this.repo = personRepository;
     }
 

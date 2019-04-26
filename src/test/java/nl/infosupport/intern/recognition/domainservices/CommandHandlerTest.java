@@ -1,13 +1,13 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.domainservices.actions.CommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.Subscription;
-import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommand;
-import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.person.add.AddFaceCommand;
-import nl.infosupport.intern.recognition.domainservices.actions.person.add.AddFaceCommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.person.create.CreatePersonCommand;
-import nl.infosupport.intern.recognition.domainservices.actions.person.create.CreatePersonCommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Subscription;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommand;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.person.add.AddFaceCommand;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.person.add.AddFaceCommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.CreatePersonCommand;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.CreatePersonCommandHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

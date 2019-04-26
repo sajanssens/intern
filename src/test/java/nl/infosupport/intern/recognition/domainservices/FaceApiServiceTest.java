@@ -1,8 +1,10 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.domainservices.actions.CommandEnum;
-import nl.infosupport.intern.recognition.domainservices.actions.CommandHandler;
-import nl.infosupport.intern.recognition.domainservices.actions.person.Command;
+import nl.infosupport.intern.recognition.domainservices.azure.CloudService;
+import nl.infosupport.intern.recognition.domainservices.azure.FaceApiService;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandType;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.CommandHandler;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.Command;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ import static org.mockito.Mockito.when;
 class FaceApiServiceTest {
 
     @Mock
-    Map<CommandEnum, CommandHandler<Command>> commands;
+    Map<CommandType, CommandHandler<Command>> commands;
     @Mock
     CommandHandler cm;
 
@@ -32,7 +34,7 @@ class FaceApiServiceTest {
         when(commands.get(any())).thenReturn(cm);
         when(cm.getResult()).thenReturn("mocked-value");
 
-        CloudRecognitionService service = new FaceApiService(commands);
+        CloudService service = new FaceApiService(commands);
 
         CompletableFuture<String> rico = CompletableFuture.supplyAsync(() -> service.createPerson("Rico"));
 

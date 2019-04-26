@@ -1,8 +1,8 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.repositories.PersonRepositoryAdapter;
-import nl.infosupport.intern.recognition.repositories.PersonService;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -17,11 +17,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
-class PersonServiceTest {
+class PersonRepositoryServiceTest {
 
     @Mock
     private PersonRepository repo;
-    private PersonRepositoryAdapter cs = new PersonService(repo);
+    private PersonRepositoryAdapter cs = new PersonRepositoryService(repo);
 
 
     @Test

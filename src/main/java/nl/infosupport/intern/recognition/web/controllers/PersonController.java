@@ -1,7 +1,8 @@
 package nl.infosupport.intern.recognition.web.controllers;
 
 import nl.infosupport.intern.recognition.applicationservices.EntryService;
-import nl.infosupport.intern.recognition.domainservices.actions.group.TrainGroupCommandHandler;
+import nl.infosupport.intern.recognition.applicationservices.RegisterResult;
+import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.web.models.NewPersonModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,13 @@ public class PersonController {
 
         logger.debug("{}", person);
 
-        String name = entryService.register(person.getName());
+        RegisterResult result = entryService.register(person.getName());
 
-        return "creating new person with name " + name;
+        if (result.isSucceed()) {
+            return "Created new person with name " + result.getName();
+        } else {
+            return "Creation not succeeded with reason: " + result.getReason();
+        }
 
     }
 
