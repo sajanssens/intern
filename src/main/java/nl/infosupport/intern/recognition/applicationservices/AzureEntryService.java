@@ -1,8 +1,11 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
+import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
+import nl.infosupport.intern.recognition.web.controllers.NoUniqueNameException;
+import nl.infosupport.intern.recognition.web.models.Person.SavedPerson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +32,23 @@ public class AzureEntryService implements EntryService {
     }
 
     @Override
-    public RegisterResult register(String name) {
-
-        //If the name already exists, handle that somehow.
-        if (!personRepositoryService.isUniqueName(name)) {
-            return new RegisterResult(false, name, "No unique name");
-        }
+    public SavedPerson register(String name) {
 
         logger.debug("{}", Thread.currentThread().getName());
 
+        var uniqueName = personRepositoryService.findById(name)
+                .map(Person::getName)
+                .orElseThrow(() -> new NoUniqueNameException(name));
+
         var azurePersonIdFuture = CompletableFuture
-                .supplyAsync(() -> createPersonService.createPerson(name));
+                .supplyAsync(() -> createPersonService.createPerson(uniqueName));
 
-        String result = personRepositoryService.create(name, azurePersonIdFuture);
 
-        return new RegisterResult(true, name, result);
+        String personId = personRepositoryService.create(name, azurePersonIdFuture);
+
+        var savedPerson = new SavedPerson(name, personId);
+
+        return savedPerson;
 
     }
 }

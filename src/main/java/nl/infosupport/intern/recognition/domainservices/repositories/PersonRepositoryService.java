@@ -2,12 +2,16 @@ package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
+import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -26,7 +30,11 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
     @Override
     public boolean isUniqueName(String name) {
         return !repo.existsById(name);
+    }
 
+    @Override
+    public Optional<Person> findById(String name) {
+        return repo.findById(name);
     }
 
     @Override
@@ -35,12 +43,29 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
         Person person = new Person();
         person.setName(name);
 
-        personId.completeOnTimeout("time-out", 5, SECONDS)
-                .thenAcceptAsync(person::setPersonId)
-                .thenRun(() -> repo.save(person))
-                .thenRun(() -> logger.debug("entity saved in database"));
+        try {
+            String fetchedPersonIdFromAzure = personId.get(5, SECONDS);
+            person.setPersonId(fetchedPersonIdFromAzure);
+            repo.save(person);
+            logger.debug("entity saved in database");
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
+            logger.debug("Exception: ", e);
+        } catch (TimeoutException e) {
+            throw new AzureTimeOutException();
+        }
 
-        return "succeed";
+
+        //Need to throw an exception instead of dealing with the exception here because
+        //now I can't deal with the exception in the controller
+//        personId.orTimeout(5, SECONDS)
+//                .exceptionally((throwable) -> "Time-Out")
+//                .thenAcceptAsync(person::setPersonId)
+//                .thenRun(() -> repo.save(person))
+//                .thenRun(() -> logger.debug("entity saved in database"));
+
+
+        return person.getPersonId();
     }
 
 

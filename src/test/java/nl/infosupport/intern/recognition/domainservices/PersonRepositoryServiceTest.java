@@ -3,6 +3,9 @@ package nl.infosupport.intern.recognition.domainservices;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryService;
+import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -13,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
@@ -21,28 +25,29 @@ class PersonRepositoryServiceTest {
 
     @Mock
     private PersonRepository repo;
-    private PersonRepositoryAdapter cs = new PersonRepositoryService(repo);
+    private PersonRepositoryAdapter cs;
 
-
-    @Test
-    void newPersonShouldHaveFaceIdFromAzureWhenAzureCompletesInTime() throws Exception {
-
-
-        CompletableFuture<String> completedFuture = CompletableFuture.completedFuture("test-face-id");
-
-        cs.create("In time", completedFuture);
-
-        sleep(1, SECONDS);
+    @BeforeEach
+    void setUp() {
+        cs = new PersonRepositoryService(repo);
     }
 
     @Test
-    void newPersonShouldHaveDefaultFaceIdWhenAzureDoesNotCompleteInTime() {
+    void newPersonShouldHaveFaceIdFromAzureWhenAzureCompletesInTime() throws Exception {
+        //
+        CompletableFuture<String> completedFuture = CompletableFuture.completedFuture("test-face-id");
+
+        String result = cs.create("test-name-in-time", completedFuture);
+
+        assertThat(result, is("test-face-id"));
+    }
+
+    @Test
+    void whenAzureDoesNotCompleteInTimeShouldThrowAzureTimeOutException() {
 
         CompletableFuture<String> neverCompletedFuture = new CompletableFuture<>();
 
-        cs.create("Not in time", neverCompletedFuture);
-
-        sleep(6,SECONDS);
+        Assertions.assertThrows(AzureTimeOutException.class, ()-> cs.create("Rico", neverCompletedFuture));
     }
 
     private void sleep(long sleep, TimeUnit timeUnit) {

@@ -1,6 +1,8 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
+import nl.infosupport.intern.recognition.web.models.Person;
+
 public interface EntryService {
 
-    RegisterResult register(String name);
+    Person.SavedPerson register(String name);
 }

@@ -1,7 +1,9 @@
 package nl.infosupport.intern.recognition.domain;
 
-import lombok.*;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +17,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Person {
 
-    private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(Person.class);
 
     @Id
     private String name;
