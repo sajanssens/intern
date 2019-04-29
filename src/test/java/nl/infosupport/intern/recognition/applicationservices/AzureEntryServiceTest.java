@@ -1,6 +1,5 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
-import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import nl.infosupport.intern.recognition.web.controllers.NoUniqueNameException;
@@ -18,7 +17,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +41,7 @@ class AzureEntryServiceTest {
     void WhenRegisterPersonAndHasUniqueNameResultShouldBeSucceeded() {
         String uniquePersonName = "Unique Name";
 
-        when(personRepositoryAdapter.findById(uniquePersonName)).thenReturn(Optional.of(new Person(uniquePersonName,"")));
+        when(personRepositoryAdapter.isUniqueName(uniquePersonName)).thenReturn(Optional.of(uniquePersonName));
         when(createPersonService.createPerson(uniquePersonName)).thenReturn("mocked-person-id");
         when(personRepositoryAdapter.create(any(),any())).thenReturn("succeed");
 
@@ -56,7 +55,7 @@ class AzureEntryServiceTest {
     void whenRegisterPersonAndHasNoUniqueNameResultShouldNotBeSucceeded() {
         String noUniqueName = "No Unique Name";
 
-        when(personRepositoryAdapter.findById(noUniqueName)).thenReturn(Optional.empty());
+        when(personRepositoryAdapter.isUniqueName(noUniqueName)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NoUniqueNameException.class, ()-> aez.register(noUniqueName));
 

@@ -15,7 +15,7 @@ public class Person {
     @Data
     static public class NewPerson {
 
-        private final String name;
+        private String name;
     }
 }
 

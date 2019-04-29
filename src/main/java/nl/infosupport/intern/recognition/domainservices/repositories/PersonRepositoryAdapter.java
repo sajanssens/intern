@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface PersonRepositoryAdapter {
 
-    boolean isUniqueName(String name);
+    Optional<String> isUniqueName(String name);
     Optional<Person> findById(String name);
     String create(String name, CompletableFuture<String> personId);
 

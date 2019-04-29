@@ -1,6 +1,5 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
-import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
@@ -36,8 +35,7 @@ public class AzureEntryService implements EntryService {
 
         logger.debug("{}", Thread.currentThread().getName());
 
-        var uniqueName = personRepositoryService.findById(name)
-                .map(Person::getName)
+        var uniqueName = personRepositoryService.isUniqueName(name)
                 .orElseThrow(() -> new NoUniqueNameException(name));
 
         var azurePersonIdFuture = CompletableFuture

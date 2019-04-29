@@ -28,8 +28,13 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
     }
 
     @Override
-    public boolean isUniqueName(String name) {
-        return !repo.existsById(name);
+    public Optional<String> isUniqueName(String name) {
+
+        if(!repo.existsById(name)){
+            return Optional.of("name");
+        }
+
+        return Optional.empty();
     }
 
     @Override

@@ -39,7 +39,7 @@ public class PersonController {
         }
         catch (NoUniqueNameException exc){
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, exc.getMessage(), exc);
+                    HttpStatus.BAD_REQUEST, exc.getMessage(), exc);
         }
         catch (AzureTimeOutException exc) {
             throw new ResponseStatusException(
