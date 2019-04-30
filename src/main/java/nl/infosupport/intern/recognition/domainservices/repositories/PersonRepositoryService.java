@@ -31,7 +31,7 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
     public Optional<String> isUniqueName(String name) {
 
         if(!repo.existsById(name)){
-            return Optional.of("name");
+            return Optional.of(name);
         }
 
         return Optional.empty();
