@@ -1,7 +1,7 @@
 package nl.infosupport.intern.recognition.web.configuration;
 
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
-import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonServiceImpl;
+import nl.infosupport.intern.recognition.domainservices.azure.AzureCreatePersonServiceImpl;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.AzureCreatePersonCommand;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.AzureCreatePersonCommandHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public CreatePersonService getAzureCreatePersonService(AzureCreatePersonCommandHandler handler,  AzureCreatePersonCommand command){
-        return new CreatePersonServiceImpl(handler, command);
+    public CreatePersonService getAzureCreatePersonService(AzureCreatePersonCommandHandler<AzureCreatePersonCommand> handler,  AzureCreatePersonCommand command){
+        return new AzureCreatePersonServiceImpl(handler, command);
     }
 }

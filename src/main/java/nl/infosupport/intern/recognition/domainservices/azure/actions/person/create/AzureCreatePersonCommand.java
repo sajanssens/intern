@@ -18,7 +18,7 @@ public class AzureCreatePersonCommand implements CreatePersonCommand {
     }
 
     @Override
-    public CreatePersonCommand setData(String name) {
+    public AzureCreatePersonCommand setData(String name) {
         this.name = name;
 
         return this;
